@@ -1,0 +1,36 @@
+# ============================================================
+# LuxeMarket — HorizontalPodAutoscaler (HPA)
+# File: k8s/hpa.yaml
+# Automatically scales pods based on CPU usage
+# Requires metrics-server: minikube addons enable metrics-server
+# ============================================================
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: luxemarket-hpa
+  namespace: luxemarket
+  labels:
+    app: luxemarket
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: luxemarket-deployment
+
+  minReplicas: 2   # Always keep at least 2 pods
+  maxReplicas: 5   # Scale up to 5 pods under load
+
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70  # Scale up when CPU > 70%
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80  # Scale up when memory > 80%

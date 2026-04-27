@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart — LUXEMARKET</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2rem;
+      padding: 2rem 5%;
+    }
+
+    .cart-items-panel {
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .cart-header-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+      gap: 1rem;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 40px;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.2rem;
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .cart-item:hover { background: rgba(255,255,255,0.01); }
+
+    .cart-item-img-name {
+      display: flex; align-items: center; gap: 1rem;
+    }
+
+    .cart-item-img {
+      width: 70px; height: 70px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .cart-item-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .cart-item-cat { font-size: 0.75rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .cart-item-price { font-weight: 600; }
+
+    .cart-qty {
+      display: flex; align-items: center; gap: 0;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+      width: fit-content;
+    }
+    .cart-qty button {
+      width: 30px; height: 30px;
+      background: transparent; border: none;
+      color: var(--text2); cursor: pointer;
+      font-size: 0.9rem; transition: var(--transition);
+    }
+    .cart-qty button:hover { color: var(--gold); }
+    .cart-qty span { width: 30px; text-align: center; font-weight: 600; font-size: 0.9rem; }
+
+    .cart-item-total { font-weight: 700; font-family: var(--ff-display); font-size: 1.05rem; }
+
+    .remove-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text3);
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .remove-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    .empty-cart {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--text2);
+      grid-column: 1/-1;
+    }
+    .empty-cart i { font-size: 4rem; color: var(--text3); margin-bottom: 1.5rem; display: block; }
+    .empty-cart h3 { font-family: var(--ff-display); font-size: 1.8rem; margin-bottom: 0.5rem; }
+
+    /* ORDER SUMMARY */
+    .order-summary {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      height: fit-content;
+      position: sticky; top: 90px;
+    }
+
+    .summary-title {
+      font-family: var(--ff-display);
+      font-size: 1.5rem; font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-row {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      font-size: 0.9rem;
+    }
+    .summary-row.total {
+      border-top: 1px solid var(--border);
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .summary-row .label { color: var(--text2); }
+    .summary-row .value { font-weight: 600; }
+    .summary-row.discount .value { color: var(--success); }
+
+    /* COUPON */
+    .coupon-wrap {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      margin: 1.2rem 0;
+    }
+
+    .coupon-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      margin-bottom: 0.7rem;
+    }
+
+    .coupon-input-row {
+      display: flex; gap: 0.5rem;
+    }
+
+    .coupon-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.8rem;
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .coupon-input:focus { outline: none; border-color: var(--gold); }
+
+    .apply-btn {
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .apply-btn:hover { background: var(--gold); color: var(--bg); }
+
+    .coupon-success {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--success);
+      display: none;
+    }
+    .coupon-error {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--danger);
+      display: none;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 1rem;
+      font-family: var(--ff-body);
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .checkout-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,168,76,0.3); }
+    .checkout-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .trust-badges {
+      display: flex; justify-content: center; gap: 1.5rem;
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+    .trust-badge { text-align: center; }
+    .trust-badge i { color: var(--gold); font-size: 1.2rem; display: block; margin-bottom: 0.3rem; }
+    .trust-badge span { font-size: 0.7rem; color: var(--text3); }
+
+    @media (max-width: 900px) {
+      .cart-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+      .cart-header-row { display: none; }
+      .cart-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="window.location.href='../index.html'">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">LUXE<em>MARKET</em></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-btn" onclick="window.location.href='login.html'" id="loginBtn">
+      <i class="fa fa-user"></i> <span id="navUserName">Login</span>
+    </button>
+    <button class="nav-btn cart-btn" onclick="window.location.href='cart.html'">
+      <i class="fa fa-bag-shopping"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> › <span>Cart</span>
+    </div>
+    <h1>Your <em>Cart</em></h1>
+  </div>
+
+  <div class="cart-layout" id="cartLayout">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+let appliedCoupon = false;
+let couponDiscount = 0;
+
+function renderCart() {
+  const cart = Cart.get();
+  const layout = document.getElementById('cartLayout');
+
+  if (cart.length === 0) {
+    layout.innerHTML = `
+      <div class="empty-cart">
+        <i class="fa fa-bag-shopping"></i>
+        <h3>Your cart is empty</h3>
+        <p style="margin-bottom:2rem">Looks like you haven't added anything yet.</p>
+        <a href="shop.html" class="btn-primary">Start Shopping</a>
+      </div>`;
+    return;
+  }
+
+  const subtotal = Cart.total();
+  const shipping = subtotal >= 999 ? 0 : 99;
+  const discountAmount = appliedCoupon ? Math.round(subtotal * couponDiscount / 100) : 0;
+  const total = subtotal + shipping - discountAmount;
+
+  layout.innerHTML = `
+    <div class="cart-items-panel">
+      <div class="cart-header-row">
+        <span>Product</span>
+        <span>Price</span>
+        <span>Quantity</span>
+        <span>Total</span>
+        <span></span>
+      </div>
+      ${cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-img-name">
+            <div class="cart-item-img"><img src="${item.image}" alt="${item.name}"/></div>
+            <div>
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-cat">${item.category}</div>
+            </div>
+          </div>
+          <div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div>
+          <div>
+            <div class="cart-qty">
+              <button onclick="updateItem(${item.id}, ${item.qty - 1})">−</button>
+              <span>${item.qty}</span>
+              <button onclick="updateItem(${item.id}, ${item.qty + 1})">+</button>
+            </div>
+          </div>
+          <div class="cart-item-total">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
+          <button class="remove-btn" onclick="removeItem(${item.id})"><i class="fa fa-times"></i></button>
+        </div>
+      `).join('')}
+      <div style="padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:center">
+        <a href="shop.html" style="color:var(--gold);font-size:0.9rem;display:flex;align-items:center;gap:0.4rem">← Continue Shopping</a>
+        <button onclick="clearCart()" style="background:transparent;border:1px solid var(--border);color:var(--text2);padding:0.5rem 1rem;border-radius:99px;font-family:var(--ff-body);font-size:0.8rem;cursor:pointer;">Clear Cart</button>
+      </div>
+    </div>
+
+    <aside class="order-summary">
+      <div class="summary-title">Order Summary</div>
+      <div class="summary-row">
+        <span class="label">Subtotal (${Cart.count()} items)</span>
+        <span class="value">₹${subtotal.toLocaleString('en-IN')}</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Shipping</span>
+        <span class="value">${shipping === 0 ? '<span style="color:var(--success)">FREE</span>' : '₹' + shipping}</span>
+      </div>
+      ${appliedCoupon ? `
+      <div class="summary-row discount">
+        <span class="label">Coupon (${COUPON_CODE})</span>
+        <span class="value">−₹${discountAmount.toLocaleString('en-IN')}</span>
+      </div>` : ''}
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>₹${total.toLocaleString('en-IN')}</span>
+      </div>
+
+      <div class="coupon-wrap">
+        <div class="coupon-label"><i class="fa fa-tag"></i> Apply Coupon</div>
+        <div class="coupon-input-row">
+          <input class="coupon-input" type="text" id="couponInput" placeholder="Enter coupon code" value="${appliedCoupon ? COUPON_CODE : ''}"/>
+          <button class="apply-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="coupon-success" id="couponSuccess" style="display:${appliedCoupon ? 'block' : 'none'}">
+          ✓ ${COUPON_DISCOUNT}% discount applied!
+        </div>
+        <div class="coupon-error" id="couponError">Invalid coupon code. Try LUXE50!</div>
+      </div>
+
+      <button class="checkout-btn" onclick="proceedToCheckout()">
+        <i class="fa fa-lock"></i> Proceed to Payment
+      </button>
+
+      <div class="trust-badges">
+        <div class="trust-badge"><i class="fa fa-shield"></i><span>Secure</span></div>
+        <div class="trust-badge"><i class="fa fa-truck"></i><span>Fast Delivery</span></div>
+        <div class="trust-badge"><i class="fa fa-rotate-left"></i><span>Easy Returns</span></div>
+      </div>
+    </aside>
+  `;
+}
+
+function updateItem(id, qty) {
+  if (qty <= 0) { removeItem(id); return; }
+  Cart.updateQty(id, Math.min(qty, 10));
+  renderCart();
+}
+
+function removeItem(id) {
+  Cart.remove(id);
+  renderCart();
+  showToast('Item removed from cart.', 'default');
+}
+
+function clearCart() {
+  if (confirm('Clear your entire cart?')) {
+    Cart.clear();
+    appliedCoupon = false;
+    renderCart();
+  }
+}
+
+function applyCoupon() {
+  const code = document.getElementById('couponInput').value.trim().toUpperCase();
+  const successEl = document.getElementById('couponSuccess');
+  const errorEl = document.getElementById('couponError');
+
+  if (code === COUPON_CODE) {
+    appliedCoupon = true;
+    couponDiscount = COUPON_DISCOUNT;
+    successEl.style.display = 'block';
+    errorEl.style.display = 'none';
+    showToast(`Coupon "${COUPON_CODE}" applied! ${COUPON_DISCOUNT}% off 🎉`, 'success');
+    renderCart();
+  } else {
+    appliedCoupon = false;
+    successEl.style.display = 'none';
+    errorEl.style.display = 'block';
+    showToast('Invalid coupon code.', 'error');
+  }
+}
+
+function proceedToCheckout() {
+  if (!Auth.isLoggedIn()) {
+    showToast('Please login to proceed.', 'error');
+    setTimeout(() => window.location.href = 'login.html', 1200);
+    return;
+  }
+  // Save coupon state for checkout
+  sessionStorage.setItem('lm_coupon', JSON.stringify({ applied: appliedCoupon, code: COUPON_CODE, discount: couponDiscount }));
+  window.location.href = 'checkout.html';
+}
+
+renderCart();
+</script>
+<script src="../js/luxechat.js"></script>
+</body>
+</html>

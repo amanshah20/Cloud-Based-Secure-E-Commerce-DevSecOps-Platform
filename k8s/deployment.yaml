@@ -1,0 +1,111 @@
+# ============================================================
+# LuxeMarket — Kubernetes Deployment
+# File: k8s/deployment.yaml
+# Run: kubectl apply -f k8s/deployment.yaml
+# ============================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: luxemarket-deployment
+  namespace: luxemarket
+  labels:
+    app: luxemarket
+    version: "1.0"
+    tier: frontend
+spec:
+  # Number of pod replicas
+  replicas: 2
+
+  # Pod selector
+  selector:
+    matchLabels:
+      app: luxemarket
+
+  # Rolling update strategy — zero downtime deployments
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # Allow 1 extra pod during update
+      maxUnavailable: 0  # Never have 0 pods available
+
+  template:
+    metadata:
+      labels:
+        app: luxemarket
+        version: "1.0"
+        tier: frontend
+    spec:
+      # Graceful termination
+      terminationGracePeriodSeconds: 30
+
+      containers:
+        - name: luxemarket
+          # ⚠️  IMAGE: After building, replace with your image name.
+          # For Minikube (local build):   luxemarket:latest
+          # For Docker Hub:               yourdockerhubusername/luxemarket:latest
+          image: luxemarket:latest
+
+          # Use local image in Minikube (never pull from remote)
+          imagePullPolicy: Never
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+
+          # Resource limits — tuned for Minikube
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+
+          # Liveness probe — restart pod if nginx crashes
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          # Readiness probe — only send traffic when pod is ready
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          # Environment variables (extend as needed)
+          env:
+            - name: APP_NAME
+              value: "LuxeMarket"
+            - name: APP_ENV
+              value: "production"
+
+          # Security context — run as non-root for security
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false  # nginx needs root to bind port 80
+
+      # Spread pods across nodes for high availability
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - luxemarket
+                topologyKey: kubernetes.io/hostname

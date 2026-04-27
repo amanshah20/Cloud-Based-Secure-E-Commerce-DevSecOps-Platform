@@ -1,0 +1,14 @@
+# ============================================================
+# LuxeMarket — Kubernetes Namespace
+# File: k8s/namespace.yaml
+# Apply this FIRST before other resources
+# Run: kubectl apply -f k8s/namespace.yaml
+# ============================================================
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: luxemarket
+  labels:
+    app: luxemarket
+    managed-by: kubectl

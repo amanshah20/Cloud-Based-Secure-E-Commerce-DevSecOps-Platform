@@ -1,0 +1,30 @@
+# ============================================================
+# .dockerignore — LuxeMarket
+# ============================================================
+
+# Git files
+.git
+.gitignore
+
+# Docker & Kubernetes files (don't copy into image)
+Dockerfile
+.dockerignore
+k8s/
+
+# Documentation
+README.md
+*.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temp files
+*.tmp
+*.log

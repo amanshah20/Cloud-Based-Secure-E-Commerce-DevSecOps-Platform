@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop — LUXEMARKET</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding: 2rem 5%;
+      min-height: 60vh;
+    }
+
+    .filters-panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      height: fit-content;
+      position: sticky; top: 90px;
+    }
+
+    .filter-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text3);
+      margin-bottom: 1rem;
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filter-group { margin-bottom: 1.8rem; }
+
+    .filter-check {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.4rem 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text2);
+      transition: var(--transition);
+    }
+    .filter-check:hover { color: var(--text); }
+    .filter-check input { accent-color: var(--gold); }
+
+    .price-range-wrap {
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .price-range {
+      width: 100%;
+      accent-color: var(--gold);
+    }
+    .price-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text2);
+    }
+
+    .sort-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .result-count { color: var(--text2); font-size: 0.9rem; }
+
+    .sort-select {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      font-family: var(--ff-body);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .search-bar-wrap {
+      position: relative; margin-bottom: 1.2rem;
+    }
+    .search-bar-wrap i {
+      position: absolute; left: 1rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+    }
+    #shopSearch {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 0.7rem 1rem 0.7rem 2.8rem;
+      color: var(--text);
+      font-family: var(--ff-body);
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+    #shopSearch:focus {
+      outline: none; border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+    }
+
+    .active-filters {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .filter-chip {
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      padding: 0.2rem 0.7rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .filter-chip button {
+      background: transparent; color: var(--gold);
+      border: none; cursor: pointer; font-size: 0.8rem;
+      padding: 0; line-height: 1;
+    }
+
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--text2);
+    }
+    .empty-state i { font-size: 3rem; color: var(--text3); margin-bottom: 1rem; display: block; }
+
+    @media (max-width: 900px) {
+      .shop-layout { grid-template-columns: 1fr; }
+      .filters-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="window.location.href='../index.html'">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">LUXE<em>MARKET</em></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-btn" onclick="window.location.href='login.html'" id="loginBtn">
+      <i class="fa fa-user"></i> <span id="navUserName">Login</span>
+    </button>
+    <button class="nav-btn cart-btn" onclick="window.location.href='cart.html'">
+      <i class="fa fa-bag-shopping"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a> › <span>Shop</span>
+    </div>
+    <h1>Our <em>Collection</em></h1>
+    <p>Discover curated premium products crafted for the discerning eye</p>
+  </div>
+
+  <div class="shop-layout">
+    <!-- SIDEBAR FILTERS -->
+    <aside class="filters-panel">
+      <div class="search-bar-wrap">
+        <i class="fa fa-search"></i>
+        <input type="text" id="shopSearch" placeholder="Search products..."/>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Categories</div>
+        <label class="filter-check"><input type="checkbox" value="watches" class="cat-filter"> Watches (4)</label>
+        <label class="filter-check"><input type="checkbox" value="bags" class="cat-filter"> Bags (3)</label>
+        <label class="filter-check"><input type="checkbox" value="fragrance" class="cat-filter"> Fragrance (3)</label>
+        <label class="filter-check"><input type="checkbox" value="accessories" class="cat-filter"> Accessories (3)</label>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Price Range</div>
+        <div class="price-range-wrap">
+          <input type="range" class="price-range" id="priceRange" min="0" max="15000" value="15000" step="100"/>
+          <div class="price-labels">
+            <span>₹0</span>
+            <span id="priceMax">₹15,000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Rating</div>
+        <label class="filter-check"><input type="radio" name="rating" value="0" checked class="rating-filter"> All Ratings</label>
+        <label class="filter-check"><input type="radio" name="rating" value="4.5" class="rating-filter"> ★ 4.5 & above</label>
+        <label class="filter-check"><input type="radio" name="rating" value="4" class="rating-filter"> ★ 4.0 & above</label>
+        <label class="filter-check"><input type="radio" name="rating" value="3.5" class="rating-filter"> ★ 3.5 & above</label>
+      </div>
+
+      <button onclick="resetFilters()" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--text2);padding:0.6rem;border-radius:99px;font-family:var(--ff-body);font-size:0.85rem;cursor:pointer;transition:var(--transition);"
+        onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'">
+        Clear All Filters
+      </button>
+    </aside>
+
+    <!-- MAIN GRID -->
+    <main>
+      <div class="sort-bar">
+        <span class="result-count" id="resultCount">Showing all products</span>
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="default">Sort by: Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+      <div class="active-filters" id="activeFilters"></div>
+      <div class="products-grid" id="shopGrid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- FOOTER SNIPPET -->
+<footer class="footer" style="margin-top:4rem">
+  <div class="footer-bottom">
+    <p>© 2025 LuxeMarket. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+let filteredProducts = [...PRODUCTS];
+
+function applyFilters() {
+  const search = document.getElementById('shopSearch').value.toLowerCase();
+  const cats = Array.from(document.querySelectorAll('.cat-filter:checked')).map(c => c.value);
+  const maxPrice = parseInt(document.getElementById('priceRange').value);
+  const minRating = parseFloat(document.querySelector('.rating-filter:checked').value);
+  const sort = document.getElementById('sortSelect').value;
+
+  filteredProducts = PRODUCTS.filter(p => {
+    const matchSearch = !search || p.name.toLowerCase().includes(search) || p.category.toLowerCase().includes(search) || p.description.toLowerCase().includes(search);
+    const matchCat = cats.length === 0 || cats.includes(p.category);
+    const matchPrice = p.price <= maxPrice;
+    const matchRating = p.rating >= minRating;
+    return matchSearch && matchCat && matchPrice && matchRating;
+  });
+
+  // Sort
+  if (sort === 'price-asc') filteredProducts.sort((a,b) => a.price - b.price);
+  else if (sort === 'price-desc') filteredProducts.sort((a,b) => b.price - a.price);
+  else if (sort === 'rating') filteredProducts.sort((a,b) => b.rating - a.rating);
+  else if (sort === 'name') filteredProducts.sort((a,b) => a.name.localeCompare(b.name));
+
+  renderGrid();
+  updateActiveFilters(cats, maxPrice, minRating, search);
+}
+
+function renderGrid() {
+  const grid = document.getElementById('shopGrid');
+  const count = document.getElementById('resultCount');
+  count.textContent = `Showing ${filteredProducts.length} of ${PRODUCTS.length} products`;
+
+  if (filteredProducts.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><i class="fa fa-box-open"></i><h3>No products found</h3><p>Try adjusting your filters or search term.</p></div>`;
+    return;
+  }
+  grid.innerHTML = filteredProducts.map(p => renderProductCard(p)).join('');
+}
+
+function updateActiveFilters(cats, maxPrice, minRating, search) {
+  const wrap = document.getElementById('activeFilters');
+  wrap.innerHTML = '';
+  if (search) addChip(wrap, `"${search}"`, () => { document.getElementById('shopSearch').value = ''; applyFilters(); });
+  cats.forEach(c => addChip(wrap, c, () => {
+    document.querySelector(`.cat-filter[value="${c}"]`).checked = false;
+    applyFilters();
+  }));
+  if (maxPrice < 15000) addChip(wrap, `Under ₹${maxPrice.toLocaleString('en-IN')}`, () => {
+    document.getElementById('priceRange').value = 15000;
+    document.getElementById('priceMax').textContent = '₹15,000';
+    applyFilters();
+  });
+  if (minRating > 0) addChip(wrap, `★ ${minRating}+`, () => {
+    document.querySelector('.rating-filter[value="0"]').checked = true;
+    applyFilters();
+  });
+}
+
+function addChip(wrap, label, removeFn) {
+  const chip = document.createElement('div');
+  chip.className = 'filter-chip';
+  chip.innerHTML = `${label} <button onclick="(${removeFn.toString()})()" >×</button>`;
+  wrap.appendChild(chip);
+}
+
+function resetFilters() {
+  document.getElementById('shopSearch').value = '';
+  document.querySelectorAll('.cat-filter').forEach(c => c.checked = false);
+  document.getElementById('priceRange').value = 15000;
+  document.getElementById('priceMax').textContent = '₹15,000';
+  document.querySelector('.rating-filter[value="0"]').checked = true;
+  document.getElementById('sortSelect').value = 'default';
+  applyFilters();
+}
+
+// Events
+document.getElementById('shopSearch').addEventListener('input', applyFilters);
+document.querySelectorAll('.cat-filter').forEach(c => c.addEventListener('change', applyFilters));
+document.getElementById('priceRange').addEventListener('input', (e) => {
+  document.getElementById('priceMax').textContent = '₹' + parseInt(e.target.value).toLocaleString('en-IN');
+  applyFilters();
+});
+document.querySelectorAll('.rating-filter').forEach(r => r.addEventListener('change', applyFilters));
+
+// Check URL param for category
+const urlParams = new URLSearchParams(window.location.search);
+const catParam = urlParams.get('cat');
+if (catParam) {
+  const check = document.querySelector(`.cat-filter[value="${catParam}"]`);
+  if (check) check.checked = true;
+}
+
+// Init
+applyFilters();
+</script>
+<script src="../js/luxechat.js"></script>
+</body>
+</html>

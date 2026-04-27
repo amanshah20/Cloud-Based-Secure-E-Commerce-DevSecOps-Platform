@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXE MARKET — Premium Store</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">LUXE<em>MARKET</em></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="pages/shop.html">Shop</a></li>
+    <li><a href="pages/about.html">About</a></li>
+    <li><a href="pages/contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-btn" onclick="window.location.href='pages/login.html'" id="loginBtn">
+      <i class="fa fa-user"></i> <span id="navUserName">Login</span>
+    </button>
+    <button class="nav-btn cart-btn" onclick="window.location.href='pages/cart.html'">
+      <i class="fa fa-bag-shopping"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grain"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-tag">New Season · 2025 Collection</span>
+    <h1 class="hero-title">Discover the<br/><em>Extraordinary</em></h1>
+    <p class="hero-sub">Curated premium products for the discerning few. Quality that speaks before words.</p>
+    <div class="hero-btns">
+      <a href="pages/shop.html" class="btn-primary">Explore Collection</a>
+      <a href="#featured" class="btn-ghost">View Highlights ↓</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card floating">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt="Hero Product"/>
+      <div class="hero-card-label">
+        <span>Featured</span>
+        <strong>Premium Watch</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>FREE SHIPPING OVER ₹999</span><span class="dot">✦</span>
+    <span>CURATED PREMIUM QUALITY</span><span class="dot">✦</span>
+    <span>SECURE PAYMENTS</span><span class="dot">✦</span>
+    <span>EXCLUSIVE DEALS</span><span class="dot">✦</span>
+    <span>FREE SHIPPING OVER ₹999</span><span class="dot">✦</span>
+    <span>CURATED PREMIUM QUALITY</span><span class="dot">✦</span>
+    <span>SECURE PAYMENTS</span><span class="dot">✦</span>
+    <span>EXCLUSIVE DEALS</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+  <div class="section-header">
+    <h2>Shop by <em>Category</em></h2>
+    <p>Everything you need, beautifully organized</p>
+  </div>
+  <div class="categories-grid">
+    <div class="cat-card" onclick="window.location.href='pages/shop.html?cat=watches'">
+      <div class="cat-img" style="background-image:url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80')"></div>
+      <div class="cat-overlay"><h3>Watches</h3><span>24 Items</span></div>
+    </div>
+    <div class="cat-card" onclick="window.location.href='pages/shop.html?cat=bags'">
+      <div class="cat-img" style="background-image:url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80')"></div>
+      <div class="cat-overlay"><h3>Bags</h3><span>18 Items</span></div>
+    </div>
+    <div class="cat-card" onclick="window.location.href='pages/shop.html?cat=fragrance'">
+      <div class="cat-img" style="background-image:url('https://images.unsplash.com/photo-1541643600914-78b084683702?w=500&q=80')"></div>
+      <div class="cat-overlay"><h3>Fragrance</h3><span>12 Items</span></div>
+    </div>
+    <div class="cat-card" onclick="window.location.href='pages/shop.html?cat=accessories'">
+      <div class="cat-img" style="background-image:url('https://images.unsplash.com/photo-1612817288484-6f916006741a?w=500&q=80')"></div>
+      <div class="cat-overlay"><h3>Accessories</h3><span>32 Items</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="featured-section" id="featured">
+  <div class="section-header">
+    <h2>Featured <em>Products</em></h2>
+    <a href="pages/shop.html" class="see-all">View All →</a>
+  </div>
+  <div class="products-grid" id="featuredGrid"></div>
+</section>
+
+<!-- BANNER -->
+<section class="promo-banner">
+  <div class="promo-content">
+    <span class="promo-tag">Limited Offer</span>
+    <h2>Use code <strong>LUXE50</strong> for 50% off</h2>
+    <p>Valid on your first order. Don't miss out on our exclusive welcome deal.</p>
+    <a href="pages/shop.html" class="btn-primary">Claim Offer</a>
+  </div>
+  <div class="promo-deco">
+    <div class="deco-circle"></div>
+    <div class="deco-circle2"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-header">
+    <h2>What <em>Customers</em> Say</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p>"Absolutely stunning quality. The packaging alone made it feel like a luxury experience."</p>
+      <div class="testi-author"><img src="https://i.pravatar.cc/60?img=1" alt=""/> <div><strong>Aanya Sharma</strong><span>Verified Buyer</span></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p>"The OTP login is seamless and the whole shopping experience is top-notch. Will be back!"</p>
+      <div class="testi-author"><img src="https://i.pravatar.cc/60?img=5" alt=""/> <div><strong>Rohan Verma</strong><span>Verified Buyer</span></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★☆</div>
+      <p>"Fast checkout, great products. The coupon deal was a cherry on top. Highly recommend."</p>
+      <div class="testi-author"><img src="https://i.pravatar.cc/60?img=9" alt=""/> <div><strong>Priya Nair</strong><span>Verified Buyer</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo-text" style="font-size:1.5rem">✦ LUXE<em>MARKET</em></div>
+      <p>Premium curated products for those who value quality over quantity.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Shop</h4>
+      <a href="pages/shop.html">All Products</a>
+      <a href="pages/shop.html?cat=watches">Watches</a>
+      <a href="pages/shop.html?cat=bags">Bags</a>
+      <a href="pages/shop.html?cat=fragrance">Fragrance</a>
+    </div>
+    <div class="footer-links">
+      <h4>Account</h4>
+      <a href="pages/login.html">Login / Sign Up</a>
+      <a href="pages/dashboard.html">My Orders</a>
+      <a href="pages/cart.html">Cart</a>
+    </div>
+    <div class="footer-links">
+      <h4>Help</h4>
+      <a href="#">FAQ</a>
+      <a href="pages/contact.html">Contact</a>
+      <a href="#">Returns</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 LuxeMarket. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/home.js"></script>
+<script src="js/luxechat.js"></script>
+</body>
+</html>

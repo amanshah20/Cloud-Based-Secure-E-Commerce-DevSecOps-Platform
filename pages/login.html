@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — LUXEMARKET</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg); }
+
+    .login-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .login-visual {
+      background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80') center/cover;
+      position: relative;
+    }
+    .login-visual::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(13,13,13,0.7) 0%, rgba(201,168,76,0.1) 100%);
+    }
+    .login-visual-content {
+      position: absolute; bottom: 3rem; left: 3rem; z-index: 1;
+    }
+    .login-visual-content h2 {
+      font-family: var(--ff-display);
+      font-size: 2.5rem; font-weight: 300;
+      color: white; line-height: 1.2;
+    }
+    .login-visual-content p { color: rgba(255,255,255,0.7); margin-top: 0.5rem; }
+
+    .login-panel {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 3rem;
+      background: var(--bg);
+    }
+
+    .login-box {
+      width: 100%; max-width: 400px;
+    }
+
+    .login-logo {
+      font-family: var(--ff-display);
+      font-size: 1.8rem; font-weight: 600;
+      margin-bottom: 2.5rem;
+      cursor: pointer;
+    }
+    .login-logo em { font-style: normal; color: var(--gold); }
+    .login-logo span { color: var(--gold); }
+
+    .login-tab-wrap {
+      display: flex;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 4px;
+      margin-bottom: 2rem;
+    }
+
+    .login-tab {
+      flex: 1; text-align: center;
+      padding: 0.6rem;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text2);
+      transition: var(--transition);
+      background: transparent;
+      border: none;
+    }
+    .login-tab.active {
+      background: var(--gold);
+      color: var(--bg);
+    }
+
+    .login-form { display: none; }
+    .login-form.active { display: block; }
+
+    .login-title {
+      font-family: var(--ff-display);
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+    .login-sub {
+      color: var(--text2); font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .otp-inputs {
+      display: flex; gap: 0.7rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .otp-input {
+      width: 52px; height: 58px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      font-family: var(--ff-display);
+      transition: var(--transition);
+    }
+    .otp-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+    }
+
+    .btn-full {
+      width: 100%;
+      background: var(--gold);
+      color: var(--bg);
+      padding: 0.95rem;
+      border-radius: 99px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none; cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--ff-body);
+    }
+    .btn-full:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-full:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 1.5rem 0;
+      color: var(--text3); font-size: 0.8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    .otp-timer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text2);
+      margin-bottom: 1rem;
+    }
+    .otp-timer span { color: var(--gold); font-weight: 600; }
+    .otp-resend {
+      color: var(--gold); cursor: pointer; font-weight: 600;
+      display: none;
+    }
+    .otp-resend.show { display: inline; }
+
+    .step-indicator {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: var(--transition);
+    }
+    .step-dot.active { background: var(--gold); transform: scale(1.3); }
+    .step-dot.done { background: var(--success); }
+
+    .email-display {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--text2); font-size: 0.85rem;
+      cursor: pointer; margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+    .back-link:hover { color: var(--gold); }
+
+    .generating-otp {
+      text-align: center; padding: 2rem;
+      color: var(--text2);
+    }
+
+    @media (max-width: 768px) {
+      .login-wrap { grid-template-columns: 1fr; }
+      .login-visual { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-visual">
+    <div class="login-visual-content">
+      <h2>Your Premium<br/>Shopping<br/>Destination</h2>
+      <p>Sign in to access exclusive deals and track your orders</p>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <div class="login-box">
+      <div class="login-logo" onclick="window.location.href='../index.html'">
+        <span>✦</span> LUXE<em>MARKET</em>
+      </div>
+
+      <div class="login-tab-wrap">
+        <button class="login-tab active" onclick="switchTab('login')">Login</button>
+        <button class="login-tab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div class="login-form active" id="loginForm">
+        <!-- STEP 1: Email -->
+        <div id="loginStep1">
+          <div class="step-indicator">
+            <div class="step-dot active" id="ls1"></div>
+            <div class="step-dot" id="ls2"></div>
+          </div>
+          <h2 class="login-title">Welcome back</h2>
+          <p class="login-sub">Enter your email to receive a one-time password</p>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com"/>
+          </div>
+          <button class="btn-full" onclick="sendLoginOTP()">
+            <i class="fa fa-paper-plane"></i> Send OTP
+          </button>
+        </div>
+
+        <!-- STEP 2: OTP -->
+        <div id="loginStep2" style="display:none">
+          <div class="step-indicator">
+            <div class="step-dot done" id="ls1b"></div>
+            <div class="step-dot active" id="ls2b"></div>
+          </div>
+          <span class="back-link" onclick="showStep('login', 1)">← Back</span>
+          <h2 class="login-title">Enter OTP</h2>
+          <p class="login-sub">We sent a 6-digit code to:</p>
+          <div class="email-display"><i class="fa fa-envelope"></i> <span id="loginEmailDisplay"></span></div>
+          <div class="otp-inputs" id="loginOtpInputs">
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+          </div>
+          <div class="otp-timer" id="loginTimer">Resend in <span id="loginTimerCount">60</span>s</div>
+          <button class="btn-full" onclick="verifyLoginOTP()">Verify & Login</button>
+        </div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div class="login-form" id="signupForm">
+        <!-- STEP 1: Details -->
+        <div id="signupStep1">
+          <div class="step-indicator">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
+          <h2 class="login-title">Create account</h2>
+          <p class="login-sub">Join thousands of premium shoppers</p>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="signupName" placeholder="Your full name"/>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="signupEmail" placeholder="you@example.com"/>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="signupPhone" placeholder="+91 98765 43210"/>
+          </div>
+          <button class="btn-full" onclick="sendSignupOTP()">Send OTP to Email</button>
+        </div>
+
+        <!-- STEP 2: OTP -->
+        <div id="signupStep2" style="display:none">
+          <span class="back-link" onclick="showStep('signup', 1)">← Back</span>
+          <h2 class="login-title">Verify Email</h2>
+          <p class="login-sub">Enter the 6-digit code sent to:</p>
+          <div class="email-display"><i class="fa fa-envelope"></i> <span id="signupEmailDisplay"></span></div>
+          <div class="otp-inputs" id="signupOtpInputs">
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+            <input class="otp-input" maxlength="1" type="text" inputmode="numeric"/>
+          </div>
+          <div class="otp-timer" id="signupTimer">Resend in <span id="signupTimerCount">60</span>s</div>
+          <button class="btn-full" onclick="verifySignupOTP()">Verify & Create Account</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// ===== CONFIG =====
+// EmailJS — replace with your own keys from emailjs.com (free plan works)
+const EMAILJS_SERVICE_ID = 'service_luxemarket';
+const EMAILJS_TEMPLATE_ID = 'template_otp';
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY'; // <-- Replace with your EmailJS public key
+const OTP_FROM_EMAIL = 'devops123cse@gmail.com';
+
+let currentLoginOTP = '';
+let currentSignupOTP = '';
+let timerInterval = null;
+
+// Init EmailJS
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+// ===== TAB SWITCH =====
+function switchTab(tab) {
+  document.querySelectorAll('.login-tab').forEach((t, i) => {
+    t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'signup' && i === 1));
+  });
+  document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+  document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+}
+
+function showStep(form, step) {
+  if (form === 'login') {
+    document.getElementById('loginStep1').style.display = step === 1 ? 'block' : 'none';
+    document.getElementById('loginStep2').style.display = step === 2 ? 'block' : 'none';
+  } else {
+    document.getElementById('signupStep1').style.display = step === 1 ? 'block' : 'none';
+    document.getElementById('signupStep2').style.display = step === 2 ? 'block' : 'none';
+  }
+}
+
+// ===== OTP GENERATION =====
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// ===== SEND OTP via EmailJS =====
+async function sendOTPEmail(toEmail, toName, otp) {
+  // If EmailJS not configured, use demo mode
+  if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+    console.log(`[DEMO MODE] OTP for ${toEmail}: ${otp}`);
+    alert(`📧 DEMO MODE\n\nYour OTP is: ${otp}\n\n(In production, this would be sent to ${toEmail} from ${OTP_FROM_EMAIL})\n\nTo enable real email sending, configure EmailJS in pages/login.html`);
+    return true;
+  }
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_email: toEmail,
+      to_name: toName || toEmail.split('@')[0],
+      from_email: OTP_FROM_EMAIL,
+      otp_code: otp,
+      store_name: 'LuxeMarket'
+    });
+    return true;
+  } catch (err) {
+    console.error('EmailJS error:', err);
+    // Fallback to demo
+    alert(`📧 Could not send email. OTP for demo: ${otp}`);
+    return true;
+  }
+}
+
+// ===== LOGIN FLOW =====
+async function sendLoginOTP() {
+  const email = document.getElementById('loginEmail').value.trim();
+  if (!email || !isValidEmail(email)) {
+    return flashError('loginEmail', 'Please enter a valid email address.');
+  }
+
+  // Check if user exists
+  const users = getUsers();
+  const user = users.find(u => u.email === email);
+  if (!user) {
+    return flashError('loginEmail', 'No account found. Please sign up first.');
+  }
+
+  currentLoginOTP = generateOTP();
+  const btn = document.querySelector('#loginStep1 .btn-full');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Sending...';
+
+  await sendOTPEmail(email, user.name, currentLoginOTP);
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send OTP';
+
+  document.getElementById('loginEmailDisplay').textContent = email;
+  showStep('login', 2);
+  setupOTPInputs('loginOtpInputs');
+  startTimer('loginTimer', 'loginTimerCount', () => sendLoginOTP());
+}
+
+function verifyLoginOTP() {
+  const entered = getOTPValue('loginOtpInputs');
+  if (entered.length < 6) return showAlert('Please enter all 6 digits.');
+  if (entered !== currentLoginOTP) {
+    shakeOTP('loginOtpInputs');
+    return showAlert('Incorrect OTP. Please try again.');
+  }
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const users = getUsers();
+  const user = users.find(u => u.email === email);
+
+  // Login success
+  const authUser = { name: user.name, email: user.email, phone: user.phone, joined: user.joined };
+  localStorage.setItem('lm_user', JSON.stringify(authUser));
+
+  showSuccessOverlay('Logged in successfully!', () => {
+    window.location.href = '../index.html';
+  });
+}
+
+// ===== SIGNUP FLOW =====
+async function sendSignupOTP() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+
+  if (!name) return flashError('signupName', 'Please enter your name.');
+  if (!email || !isValidEmail(email)) return flashError('signupEmail', 'Please enter a valid email.');
+
+  const users = getUsers();
+  if (users.find(u => u.email === email)) {
+    return flashError('signupEmail', 'This email is already registered. Please login.');
+  }
+
+  currentSignupOTP = generateOTP();
+  const btn = document.querySelector('#signupStep1 .btn-full');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Sending OTP...';
+
+  await sendOTPEmail(email, name, currentSignupOTP);
+
+  btn.disabled = false;
+  btn.innerHTML = 'Send OTP to Email';
+
+  document.getElementById('signupEmailDisplay').textContent = email;
+  showStep('signup', 2);
+  setupOTPInputs('signupOtpInputs');
+  startTimer('signupTimer', 'signupTimerCount', () => sendSignupOTP());
+}
+
+function verifySignupOTP() {
+  const entered = getOTPValue('signupOtpInputs');
+  if (entered.length < 6) return showAlert('Please enter all 6 digits.');
+  if (entered !== currentSignupOTP) {
+    shakeOTP('signupOtpInputs');
+    return showAlert('Incorrect OTP. Please try again.');
+  }
+
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const phone = document.getElementById('signupPhone').value.trim();
+
+  const newUser = {
+    name, email, phone,
+    joined: new Date().toLocaleDateString('en-IN'),
+    orders: []
+  };
+
+  const users = getUsers();
+  users.push(newUser);
+  localStorage.setItem('lm_users', JSON.stringify(users));
+  localStorage.setItem('lm_user', JSON.stringify({ name, email, phone, joined: newUser.joined }));
+
+  showSuccessOverlay('Account created! Welcome to LuxeMarket 🎉', () => {
+    window.location.href = '../index.html';
+  });
+}
+
+// ===== HELPERS =====
+function getUsers() {
+  const u = localStorage.getItem('lm_users');
+  return u ? JSON.parse(u) : [];
+}
+
+function isValidEmail(e) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
+
+function flashError(fieldId, msg) {
+  const field = document.getElementById(fieldId);
+  if (field) {
+    field.style.borderColor = 'var(--danger)';
+    field.style.animation = 'shake 0.3s ease';
+    setTimeout(() => {
+      field.style.borderColor = '';
+      field.style.animation = '';
+    }, 1500);
+  }
+  showAlert(msg);
+}
+
+function showAlert(msg) {
+  const existing = document.querySelector('.inline-alert');
+  if (existing) existing.remove();
+  const a = document.createElement('div');
+  a.className = 'inline-alert';
+  a.style.cssText = 'background:rgba(229,85,85,0.1);border:1px solid var(--danger);color:#e55;padding:0.7rem 1rem;border-radius:8px;font-size:0.85rem;margin-bottom:1rem;';
+  a.textContent = msg;
+  const active = document.querySelector('.login-form.active');
+  if (active) active.prepend(a);
+  setTimeout(() => a.remove(), 3000);
+}
+
+function setupOTPInputs(containerId) {
+  const inputs = document.querySelectorAll(`#${containerId} .otp-input`);
+  inputs.forEach((inp, i) => {
+    inp.value = '';
+    inp.addEventListener('input', (e) => {
+      const v = e.target.value.replace(/\D/g, '');
+      e.target.value = v;
+      if (v && i < inputs.length - 1) inputs[i + 1].focus();
+    });
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i - 1].focus();
+    });
+    inp.addEventListener('paste', (e) => {
+      const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+      inputs.forEach((inp2, j) => { inp2.value = paste[j] || ''; });
+      inputs[5].focus();
+      e.preventDefault();
+    });
+  });
+  inputs[0].focus();
+}
+
+function getOTPValue(containerId) {
+  return Array.from(document.querySelectorAll(`#${containerId} .otp-input`))
+    .map(i => i.value).join('');
+}
+
+function shakeOTP(containerId) {
+  const inputs = document.querySelectorAll(`#${containerId} .otp-input`);
+  inputs.forEach(inp => {
+    inp.style.borderColor = 'var(--danger)';
+    inp.style.animation = 'shake 0.3s ease';
+    setTimeout(() => {
+      inp.style.borderColor = '';
+      inp.style.animation = '';
+      inp.value = '';
+    }, 1000);
+  });
+  inputs[0].focus();
+}
+
+function startTimer(containerId, spanId, resendFn) {
+  if (timerInterval) clearInterval(timerInterval);
+  let seconds = 60;
+  const timerEl = document.getElementById(containerId);
+  const countEl = document.getElementById(spanId);
+  if (countEl) countEl.textContent = seconds;
+
+  timerInterval = setInterval(() => {
+    seconds--;
+    if (countEl) countEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timerInterval);
+      if (timerEl) timerEl.innerHTML = '<span class="otp-resend show" onclick="' + resendFn.name + '()">Resend OTP</span>';
+    }
+  }, 1000);
+}
+
+function showSuccessOverlay(msg, cb) {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:1rem;';
+  overlay.innerHTML = `
+    <div style="width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;">✓</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:white;text-align:center;">${msg}</h2>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;">Redirecting...</p>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(cb, 1800);
+}
+
+// Add shake keyframe
+const style = document.createElement('style');
+style.textContent = '@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }';
+document.head.appendChild(style);
+
+// Check if already logged in
+const existingUser = localStorage.getItem('lm_user');
+if (existingUser) window.location.href = '../index.html';
+</script>
+<script src="../js/luxechat.js"></script>
+</body>
+</html>

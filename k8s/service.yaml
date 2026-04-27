@@ -1,0 +1,57 @@
+# ============================================================
+# LuxeMarket — Kubernetes Service
+# File: k8s/service.yaml
+# Run: kubectl apply -f k8s/service.yaml
+# ============================================================
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: luxemarket-service
+  namespace: luxemarket
+  labels:
+    app: luxemarket
+    tier: frontend
+  annotations:
+    # Minikube tunnel annotation (informational)
+    description: "LuxeMarket frontend service — use 'minikube service luxemarket-service -n luxemarket' to access"
+spec:
+  # NodePort makes the service accessible outside the cluster
+  # Use 'minikube service luxemarket-service -n luxemarket' to open in browser
+  type: NodePort
+
+  selector:
+    app: luxemarket
+
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80           # Service port (internal cluster port)
+      targetPort: 80     # Container port (matches containerPort in deployment)
+      nodePort: 30080    # External port on the Minikube node (range: 30000-32767)
+                         # Access via: http://<minikube-ip>:30080
+
+---
+# ============================================================
+# Optional: LoadBalancer Service (use with minikube tunnel)
+# Uncomment this and comment the NodePort service above
+# Then run: minikube tunnel   (in a separate terminal)
+# Access via: http://localhost
+# ============================================================
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: luxemarket-service-lb
+#   namespace: luxemarket
+#   labels:
+#     app: luxemarket
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: luxemarket
+#   ports:
+#     - name: http
+#       protocol: TCP
+#       port: 80
+#       targetPort: 80

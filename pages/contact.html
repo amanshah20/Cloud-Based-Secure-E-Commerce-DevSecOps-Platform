@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — LUXEMARKET</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; padding: 3rem 5%;
+    }
+
+    .contact-info h2 {
+      font-family: var(--ff-display);
+      font-size: 2.5rem; font-weight: 300;
+      margin-bottom: 1rem; line-height: 1.2;
+    }
+    .contact-info p { color: var(--text2); line-height: 1.8; margin-bottom: 2rem; }
+
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .contact-icon {
+      width: 46px; height: 46px; flex-shrink: 0;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 1rem;
+    }
+    .contact-item-text strong { display: block; margin-bottom: 0.2rem; }
+    .contact-item-text span { color: var(--text2); font-size: 0.88rem; }
+
+    .contact-form-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+    }
+
+    .contact-form-box h3 {
+      font-family: var(--ff-display);
+      font-size: 1.6rem; font-weight: 600;
+      margin-bottom: 1.8rem;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .send-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--gold);
+      color: var(--bg);
+      border: none; border-radius: 99px;
+      font-weight: 700; font-size: 0.95rem;
+      font-family: var(--ff-body);
+      cursor: pointer; transition: var(--transition);
+      margin-top: 0.5rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .send-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .faq-section {
+      padding: 4rem 5%;
+      border-top: 1px solid var(--border);
+    }
+    .faq-section .section-header { text-align:center; display:block; margin-bottom:3rem; }
+
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      cursor: pointer; transition: var(--transition);
+    }
+    .faq-item:hover { border-color: rgba(201,168,76,0.25); }
+
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600; margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .faq-q i { color: var(--gold); transition: var(--transition); }
+    .faq-a { color: var(--text2); font-size: 0.87rem; line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, margin 0.3s ease; }
+    .faq-item.open .faq-a { max-height: 200px; margin-top: 0.8rem; }
+    .faq-item.open .faq-q i { transform: rotate(45deg); }
+
+    @media(max-width:768px) {
+      .contact-layout { grid-template-columns:1fr; gap:2rem; }
+      .faq-grid { grid-template-columns:1fr; }
+      .form-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="window.location.href='../index.html'">
+    <span class="logo-icon">✦</span>
+    <span class="logo-text">LUXE<em>MARKET</em></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-btn" onclick="window.location.href='login.html'" id="loginBtn">
+      <i class="fa fa-user"></i> <span id="navUserName">Login</span>
+    </button>
+    <button class="nav-btn cart-btn" onclick="window.location.href='cart.html'">
+      <i class="fa fa-bag-shopping"></i>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="../index.html">Home</a> › <span>Contact</span></div>
+    <h1>Get in <em>Touch</em></h1>
+    <p>We'd love to hear from you. Our team is always ready to help.</p>
+  </div>
+
+  <div class="contact-layout">
+    <div class="contact-info">
+      <h2>Let's start a <em>conversation</em></h2>
+      <p>Whether you have a question about an order, a product, or just want to say hello — we're here for you. Response time is typically under 2 hours.</p>
+
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fa fa-envelope"></i></div>
+        <div class="contact-item-text">
+          <strong>Email Us</strong>
+          <span>support@luxemarket.in</span><br/>
+          <span>hello@luxemarket.in</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fa fa-phone"></i></div>
+        <div class="contact-item-text">
+          <strong>Call Us</strong>
+          <span>+91 98765 43210</span><br/>
+          <span>Mon–Sat, 10am–7pm IST</span>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fa fa-map-marker-alt"></i></div>
+        <div class="contact-item-text">
+          <strong>Visit Us</strong>
+          <span>LuxeMarket HQ, Bandra West</span><br/>
+          <span>Mumbai, Maharashtra 400050</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:0.8rem;margin-top:1.5rem">
+        <a href="#" style="width:40px;height:40px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'"><i class="fab fa-instagram"></i></a>
+        <a href="#" style="width:40px;height:40px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'"><i class="fab fa-twitter"></i></a>
+        <a href="#" style="width:40px;height:40px;background:var(--bg2);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:var(--transition)" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text2)'"><i class="fab fa-facebook"></i></a>
+      </div>
+    </div>
+
+    <div class="contact-form-box">
+      <h3>Send us a message</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="cFirstName" placeholder="First name"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="cLastName" placeholder="Last name"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="cEmail" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <select id="cSubject" style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.8rem 1rem;color:var(--text);font-family:var(--ff-body);font-size:0.95rem;width:100%">
+          <option value="">Select a topic...</option>
+          <option value="order">Order Issue</option>
+          <option value="product">Product Query</option>
+          <option value="return">Returns & Refunds</option>
+          <option value="payment">Payment Help</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="cMessage" rows="5" placeholder="Tell us how we can help..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.8rem 1rem;color:var(--text);font-family:var(--ff-body);font-size:0.95rem;resize:vertical;transition:var(--transition)"></textarea>
+      </div>
+      <button class="send-btn" onclick="sendMessage()">
+        <i class="fa fa-paper-plane"></i> Send Message
+      </button>
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <div class="section-header">
+      <h2>Frequently Asked <em>Questions</em></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How do I track my order? <i class="fa fa-plus"></i></div>
+        <div class="faq-a">Once your order is placed, you can view real-time status in your dashboard under "My Orders". You'll also receive email updates at each stage.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What is the return policy? <i class="fa fa-plus"></i></div>
+        <div class="faq-a">We offer hassle-free 30-day returns on all items in original condition. Just initiate a return from your dashboard and we'll arrange pickup.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How do I use a coupon code? <i class="fa fa-plus"></i></div>
+        <div class="faq-a">During checkout, you'll be prompted to enter your coupon code. Enter it in the coupon field and the discount will be applied automatically to your order total.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Is my payment information safe? <i class="fa fa-plus"></i></div>
+        <div class="faq-a">Absolutely. We use industry-standard encryption and never store your card details on our servers. All transactions are processed securely.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How does OTP login work? <i class="fa fa-plus"></i></div>
+        <div class="faq-a">Instead of passwords, we send a one-time 6-digit code to your registered email. This is more secure than traditional passwords and can't be phished.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do you offer free shipping? <i class="fa fa-plus"></i></div>
+        <div class="faq-a">Yes! Orders over ₹999 qualify for free shipping across India. For orders below that, a flat ₹99 shipping fee applies.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="footer-bottom">
+    <p>© 2025 LuxeMarket. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/data.js"></script>
+<script src="../js/app.js"></script>
+<script>
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+
+function sendMessage() {
+  const name = document.getElementById('cFirstName').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const msg = document.getElementById('cMessage').value.trim();
+
+  if (!name || !email || !msg) {
+    showToast('Please fill in all required fields.', 'error');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showToast('Please enter a valid email.', 'error');
+    return;
+  }
+
+  // Simulate send
+  const btn = document.querySelector('.send-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> Sending...';
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send Message';
+    showToast('Message sent! We\'ll reply within 2 hours.', 'success');
+    document.getElementById('cFirstName').value = '';
+    document.getElementById('cLastName').value = '';
+    document.getElementById('cEmail').value = '';
+    document.getElementById('cMessage').value = '';
+    document.getElementById('cSubject').value = '';
+  }, 1500);
+}
+</script>
+<script src="../js/luxechat.js"></script>
+</body>
+</html>
