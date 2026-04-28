@@ -16,6 +16,20 @@ ecommerce/
 │   ├── data.js             ← Product database & constants
 │   ├── app.js              ← Auth, Cart, Toast utilities
 │   └── home.js             ← Homepage logic
+├── k8s/
+│   ├── configmap.yaml
+│   ├── deployment.yaml
+│   ├── hpa.yaml
+│   ├── namespace.yaml
+│   └── service.yaml
+├── terraform/
+│   ├── versions.tf         ← AWS provider, EC2, and security group
+│   ├── variables.tf        ← Terraform inputs
+│   ├── outputs.tf          ← Instance outputs and Ansible hints
+│   └── terraform.tfvars.example
+├── ansible/
+│   ├── inventory.ini.example
+│   └── install-kubernetes.yml
 └── pages/
     ├── login.html          ← Login/Signup with OTP
     ├── shop.html           ← Shop with filters & search
@@ -44,6 +58,22 @@ npx serve .
 
 # Then open http://localhost:8000
 ```
+
+### Option 3: AWS EC2 + Kubernetes
+Use Terraform to create one Ubuntu EC2 instance, then use Ansible to install Docker, containerd, kubeadm, kubelet, and kubectl on that host.
+
+```bash
+cd terraform
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform apply
+
+cd ..
+cp ansible/inventory.ini.example ansible/inventory.ini
+ansible-playbook -i ansible/inventory.ini ansible/install-kubernetes.yml
+```
+
+Terraform outputs the EC2 public IP and a ready-to-paste Ansible inventory line. The resulting Kubernetes node is a single-node control plane, which is the simplest fit for this repo's current Kubernetes manifests.
 
 ---
 
